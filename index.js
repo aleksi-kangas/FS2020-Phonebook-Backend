@@ -1,7 +1,22 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 
 app.use(express.json())
+
+// Create morgan token for showing data in POST request
+morgan.token('data', (req, res) => {
+    // Show data of the POST request
+    if (req.method === 'POST') {
+        return JSON.stringify(req.body)
+    } else {
+        return null
+    }
+})
+
+// Use custom morgan token for logging (:data)
+app.use(morgan(
+    ":method :url :status :res[content-length] - :response-time ms :data"))
 
 let people = [
     {
