@@ -1,8 +1,11 @@
 const express = require('express')
 const morgan = require('morgan')
+const cors = require('cors')
 const app = express()
 
 app.use(express.json())
+
+app.use(cors())
 
 // Create morgan token for showing data in POST request
 morgan.token('data', (req, res) => {
@@ -48,11 +51,11 @@ app.get('/info', (req, res) => {
     res.send(`<p>${info}</p><p>${time}</p>`)
 })
 
-app.get('/api/persons', (req, res) => {
+app.get('/api/people', (req, res) => {
     res.json(people)
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/people/:id', (req, res) => {
     const id = Number(req.params.id)
     const person = people.find(p => p.id === id)
 
@@ -63,7 +66,7 @@ app.get('/api/persons/:id', (req, res) => {
     }
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/people', (req, res) => {
     const body = req.body
 
     // Name or number can't be missing
@@ -90,7 +93,7 @@ app.post('/api/persons', (req, res) => {
     res.json(person)
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/people/:id', (req, res) => {
     const id = Number(req.params.id)
     people = people.filter(p => p.id !== id)
 
@@ -98,7 +101,7 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
