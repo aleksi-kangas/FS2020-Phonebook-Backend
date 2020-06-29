@@ -42,7 +42,7 @@ app.get('/api/people', (req, res) => {
     })
 })
 
-app.get('/api/people/:id', (req, res) => {
+app.get('/api/people/:id', (req, res, next) => {
     Person.findById(req.params.id)
         .then(person => {
             if (person) {
@@ -54,7 +54,7 @@ app.get('/api/people/:id', (req, res) => {
         .catch(error => next(error))
 })
 
-app.post('/api/people', (req, res) => {
+app.post('/api/people', (req, res, next) => {
     const person = new Person({
         name: req.body.name,
         number: req.body.number
@@ -78,7 +78,7 @@ app.put('/api/people/:id', (req, res, next) => {
         .catch(error => next(error))
 })
 
-app.delete('/api/people/:id', (req, res) => {
+app.delete('/api/people/:id', (req, res, next) => {
     Person.findByIdAndRemove(req.params.id)
         .then(result => {
             res.status(204).end()
